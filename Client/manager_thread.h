@@ -9,30 +9,37 @@
 #include <string>
 #include <list>
 #include <chrono>
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 #include <cstddef>
+#include <fstream>
+#include <cstdio>
 
 #include "semafore.h"
 #include "client.h"
 
+#define  SIZE_BUFER     5
+#define  NAMEDPIPE_NAME "./myFile.txt"
 
 class ManagerThread {
-private:
-    std::list<std::string> buf;
+    int                    fd;
     Client                 client;
     std::mutex             mutex;
-    Semafore               semafore;
+    Semafore*              queue;
     std::string            input;
     std::string            for_find;
     std::string            for_replase;
+    std::ofstream          myFile_input;
+    std::ifstream          myFile_output;
+
     void                   first();
     void                   second();
     int                    testInputString();
-    int                    getSum(std::string& sum);
-    void                   intToStr(std::string &str, int& sum);
+    int                    getSum(std::string& str);
+    void                   intToStr(std::string& str, int& sum);
 
 public:
                            ManagerThread();
+                           ~ManagerThread();
     void                   startThreads();
 };
 

@@ -17,7 +17,7 @@ void Client::tryConnect(){
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         /* @dbg */
-        perror("Error init socket");
+        //perror("Error init socket");
         exit(1);
     }
     while (connect(sock, (struct sockaddr *) &server_address, sizeof(server_address)) < 0) {
@@ -42,6 +42,6 @@ void Client::sendMessage(std::string& message){
         } else {
             std::this_thread::sleep_for(std::chrono::milliseconds(50));    /* loss of messages when calling send() without delay */
             break;                                                         /* 3/4/5 or more messages within a second. */
-        }                                                                  /* The situation is created when there are accumulated messages when reconnecting. */
+        }                                                                  /* The situation is created when there are accumulated messages during the reconnecting. */
     }
 }

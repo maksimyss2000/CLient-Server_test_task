@@ -1,16 +1,27 @@
 #include "manager_thread.h"
 
-
 ManagerThread::ManagerThread(){
     for_find    = "02468";
-    for_replase = "KB";
+    for_replase = "RnD";
+    queue       = new Semafore(0);
+    myFile_input.open(NAMEDPIPE_NAME);
+    myFile_output.open(NAMEDPIPE_NAME);
 }
+
+
+ManagerThread::~ManagerThread(){
+    delete   queue;
+    myFile_input.close();
+    myFile_output.close();
+    std::remove(NAMEDPIPE_NAME);
+}
+
 
 int ManagerThread::testInputString(){
     std::size_t found = input.find_first_not_of("0123456789");
     if (input.length() > 64 || found != std::string::npos) {
         /* dbg */
-        std::cout << "DBG: not push str:" << input << std::endl;
+        //std::cout << "DBG: not push str:" << input << std::endl;
         return 1;
     }
 
@@ -29,7 +40,7 @@ int ManagerThread::testInputString(){
 
 int ManagerThread::getSum(std::string& str){
     int sum = 0;
-    for (char &simbol :str) {
+    for (char &simbol :  str) {
         if (isdigit(simbol)) {
             sum += simbol - '0';
         }
@@ -39,49 +50,41 @@ int ManagerThread::getSum(std::string& str){
 }
 
 
-void ManagerThread::intToStr(std::string &str, int& sum){
+void ManagerThread::intToStr(std::string& str, int& sum){
     std::stringstream ss;
     ss << sum;
     str = ss.str();
 }
 
 
-/*The solution comes down to the typical consumer-producer problem with a bexoner buffer.
- *The buffer is a two-linked list for easy insertion at the beginning and removal from the end.
+/*The solution comes down to the typical consumer-producer problem with a circle buffer.
  * The problem specifies only 2 threads, but works for more.
  */
-
-
 void ManagerThread::first(){
-    while (true) {
-        std::cin >> input;
+    while (true) {    /* start main producer logic */
+        std::getline(std::cin, input);
         if (testInputString()) {
             continue;;
         }
-        mutex.lock();                      /* start main producer logic */
-        buf.push_back(input);
+        mutex.lock();
+        myFile_input << input << std::endl;
         mutex.unlock();
-        semafore.up();
+        queue->up();
     }
 }
 
 
 void ManagerThread::second(){
     int sum;
-    std::string* str;
-    while (true) {
-        semafore.down();                   /* start main consumer logic */
+    std::string str;
+    while (true) {    /* start main consumer logic */
+        queue->down();
         mutex.lock();
-        str = &buf.front();
-
+        getline(myFile_output, str);
         mutex.unlock();
-        sum = getSum(*str);
-        intToStr(*str, sum);
-        client.sendMessage(*str);
-
-        mutex.lock();
-        buf.pop_front();
-        mutex.unlock();
+        sum = getSum(str);
+        intToStr(str, sum);
+        client.sendMessage(str);
     }
 }
 
