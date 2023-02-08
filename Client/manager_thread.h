@@ -25,7 +25,7 @@ class ManagerThread {
     std::unique_ptr<Client>   client;
     std::unique_ptr<Semafore> queue;
     std::mutex                mutex;
-    std::queue<std::string>   buffer; 
+    std::queue<std::string>   buffer;      /* Insertion or removal of elements at the end or beginning - constant O(1) */
     std::string               input;
     std::string               for_find;
     std::string               for_replase;
