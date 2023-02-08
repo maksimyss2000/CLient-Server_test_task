@@ -7,40 +7,36 @@
 #include <condition_variable>
 #include <thread>
 #include <string>
-#include <list>
 #include <chrono>
-#include <bits/stdc++.h>
 #include <cstddef>
 #include <fstream>
 #include <cstdio>
+#include <queue>
+#include <memory>
+#include <bits/stdc++.h>
 
 #include "semafore.h"
 #include "client.h"
 
-#define  SIZE_BUFER     5
-#define  NAMEDPIPE_NAME "./myFile.txt"
 
 class ManagerThread {
-    int                    fd;
-    Client                 client;
-    std::mutex             mutex;
-    Semafore*              queue;
-    std::string            input;
-    std::string            for_find;
-    std::string            for_replase;
-    std::ofstream          myFile_input;
-    std::ifstream          myFile_output;
+    Client                    client;
+    std::unique_ptr<Semafore> queue;
+    std::mutex                mutex;
+    std::queue<std::string>   buffer; 
+    std::string               input;
+    std::string               for_find;
+    std::string               for_replase;
 
-    void                   first();
-    void                   second();
-    int                    testInputString();
-    int                    getSum(std::string& str);
-    void                   intToStr(std::string& str, int& sum);
+    void                      first();
+    void                      second();
+    int                       testInputString();
+    int                       getSum(std::string& str);
+    void                      intToStr(std::string& str, int& sum);
 
 public:
-                           ManagerThread();
-                           ~ManagerThread();
-    void                   startThreads();
+                              ManagerThread();
+    void                      startThreads();
 };
 
 #endif // MANAGER_THREAD_H

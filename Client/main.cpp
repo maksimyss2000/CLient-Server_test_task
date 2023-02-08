@@ -1,7 +1,7 @@
 #include <iostream>
+#include <string>
 #include <signal.h>
 #include "manager_thread.h"
-#include <string>
 
 
 int main(){

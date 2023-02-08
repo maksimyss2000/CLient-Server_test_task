@@ -18,5 +18,5 @@ void Semafore::up(){
 void Semafore::down(){
     std::unique_lock<std::mutex> lock(mutex);
     count--;
-    cond_var.wait(lock,[this]{return this->count >= 0;});
+    cond_var.wait(lock, [this]{return this->count >= 0;});    /* the lambda function protects against spurious wakeup */      
 }

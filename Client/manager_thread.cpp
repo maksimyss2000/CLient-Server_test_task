@@ -1,19 +1,10 @@
 #include "manager_thread.h"
 
+
 ManagerThread::ManagerThread(){
     for_find    = "02468";
-    for_replase = "RnD";
-    queue       = new Semafore(0);
-    myFile_input.open(NAMEDPIPE_NAME);
-    myFile_output.open(NAMEDPIPE_NAME);
-}
-
-
-ManagerThread::~ManagerThread(){
-    delete   queue;
-    myFile_input.close();
-    myFile_output.close();
-    std::remove(NAMEDPIPE_NAME);
+    for_replase = "KB";
+    queue       = std::make_unique<Semafore>(0);
 }
 
 
@@ -57,18 +48,19 @@ void ManagerThread::intToStr(std::string& str, int& sum){
 }
 
 
-/*The solution comes down to the typical consumer-producer problem with a circle buffer.
+/* The solution comes down to the typical consumer-producer problem with a circle buffer.
  * The problem specifies only 2 threads, but works for more.
  */
 void ManagerThread::first(){
-    while (true) {    /* start main producer logic */
+    while (true) {                         /* start main producer logic */
         std::getline(std::cin, input);
         if (testInputString()) {
             continue;;
         }
         mutex.lock();
-        myFile_input << input << std::endl;
+        buffer.push(input);
         mutex.unlock();
+
         queue->up();
     }
 }
@@ -77,11 +69,15 @@ void ManagerThread::first(){
 void ManagerThread::second(){
     int sum;
     std::string str;
-    while (true) {    /* start main consumer logic */
+    while (true) {                         /* start main consumer logic */
         queue->down();
         mutex.lock();
-        getline(myFile_output, str);
+
+        str = buffer.front();
+        buffer.pop();
+
         mutex.unlock();
+
         sum = getSum(str);
         intToStr(str, sum);
         client.sendMessage(str);

@@ -1,5 +1,6 @@
 #include "client.h"
 
+
 Client::Client(){
     server_address.sin_port        = htons(MY_PORT);
     server_address.sin_family      = AF_INET;

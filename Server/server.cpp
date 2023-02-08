@@ -57,4 +57,3 @@ void  Server::handleMessage(){
         std::cout << "Error get data" << std::endl;
     }
 }
-
