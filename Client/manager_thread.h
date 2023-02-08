@@ -18,8 +18,8 @@
 #include "semafore.h"
 #include "client.h"
 
-
 #define MAX_INPUT_LENGHT 64                /* Set by Condition. To solve the phenomenon of magic numbers */
+
 
 class ManagerThread {
     std::unique_ptr<Client>   client;
