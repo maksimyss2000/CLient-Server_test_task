@@ -20,7 +20,7 @@
 
 
 class ManagerThread {
-    Client                    client;
+    std::unique_ptr<Client>   client;
     std::unique_ptr<Semafore> queue;
     std::mutex                mutex;
     std::queue<std::string>   buffer; 
@@ -35,7 +35,7 @@ class ManagerThread {
     void                      intToStr(std::string& str, int& sum);
 
 public:
-                              ManagerThread();
+                              ManagerThread(int argc, char *argv[]);
     void                      startThreads();
 };
 

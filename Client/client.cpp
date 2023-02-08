@@ -1,16 +1,34 @@
 #include "client.h"
 
 
-Client::Client(){
-    server_address.sin_port        = htons(MY_PORT);
+Client::Client(int argc, char *argv[]){
+    recognizeArgument(argc, argv);
+    server_address.sin_port        = htons(port);
     server_address.sin_family      = AF_INET;
-    server_address.sin_addr.s_addr = inet_addr(MY_IP);
+    server_address.sin_addr.s_addr = inet_addr(ip.c_str());
     tryConnect();
 }
 
 
 Client::~Client(){
     close(sock);
+}
+
+
+/*TODO: make a handle invalid arguments and check the port and IP*/
+void Client::recognizeArgument(int argc, char *argv[]){ 
+    if (argc == 2 && !strcmp(argv[1], "-h")) {
+        std::cout << "Usage: server.out [IP] [PORT]\n"
+                     "With no IP and no PORT, use default PORT and default IP\n";
+        exit(0);
+    }
+    if (argc >= 3) {
+        ip   = argv[1];
+        port = atoi(argv[2]);
+    } else {
+        ip   = DEFAULT_IP;
+        port = DEFAULT_PORT;
+    }
 }
 
 

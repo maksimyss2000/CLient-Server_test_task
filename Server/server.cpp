@@ -1,16 +1,17 @@
 #include "server.h"
 
 
-Server::Server(){
+Server::Server(int argc, char *argv[]){
+    recognizeArgument(argc, argv);
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
        perror("Error init socket");
        exit(1);
     }
 
-    server_address.sin_port        = htons(MY_PORT);
+    server_address.sin_port        = htons(port);
     server_address.sin_family      = AF_INET;
-    server_address.sin_addr.s_addr = inet_addr(MY_IP);
+    server_address.sin_addr.s_addr = inet_addr(ip.c_str());
     if (bind(sock, (struct sockaddr *) &server_address, sizeof(server_address)) < 0) {
         perror("Error bind");
         exit(2);
@@ -20,6 +21,23 @@ Server::Server(){
 
 Server::~Server(){
     close(server);
+}
+
+
+/*TODO: make a handle invalid arguments and check the port and IP*/
+void Server::recognizeArgument(int argc, char *argv[]){ 
+    if (argc == 2 && !strcmp(argv[1], "-h")) {
+        std::cout << "Usage: server.out [IP] [PORT]\n"
+                     "With no IP and no PORT, use default PORT and default IP\n";
+        exit(0);
+    }
+    if (argc >= 3) {
+        ip   = argv[1];
+        port = atoi(argv[2]);
+    } else {
+        ip   = DEFAULT_IP;
+        port = DEFAULT_PORT;
+    }
 }
 
 

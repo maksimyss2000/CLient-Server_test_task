@@ -13,22 +13,25 @@
 #include <unistd.h>
 
 
-#define MY_PORT  4001
-#define MY_IP    "127.0.0.10"
-#define BUF_SIZE 150                       /* We assume that longer messages will be filtered out by program #1 */
+#define DEFAULT_PORT  4001
+#define DEFAULT_IP    "127.0.0.10"
+#define BUF_SIZE      150                  /* We assume that longer messages will be filtered out by program #1 */
 
 
 class Server {
 public:
-                       Server();
+                       Server(int argc, char *argv[]);
                        ~Server();
     void               getMessage();
     void               handleMessage();
+    void               recognizeArgument(int argc, char *argv[]);
 
 private:
     int                server;
     int                sock;
+    int                port;
     char               buf[BUF_SIZE];
+    std::string        ip;
     std::string        message;
     struct sockaddr_in server_address;
 };

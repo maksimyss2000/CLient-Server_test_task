@@ -2,8 +2,8 @@
 #include "server.h"
 
 
-int main(){
-    Server server;
+int main(int argc, char *argv[]){
+    Server server(argc, argv);
     server.getMessage();
     return 0;
 }

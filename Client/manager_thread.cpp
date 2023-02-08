@@ -1,9 +1,10 @@
 #include "manager_thread.h"
 
 
-ManagerThread::ManagerThread(){
+ManagerThread::ManagerThread(int argc, char *argv[]){
     for_find    = "02468";
     for_replase = "KB";
+    client      = std::make_unique<Client>(argc, argv);
     queue       = std::make_unique<Semafore>(0);
 }
 
@@ -80,7 +81,7 @@ void ManagerThread::second(){
 
         sum = getSum(str);
         intToStr(str, sum);
-        client.sendMessage(str);
+        client->sendMessage(str);
     }
 }
 
