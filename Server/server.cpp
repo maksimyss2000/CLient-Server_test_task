@@ -70,7 +70,7 @@ void  Server::handleMessage(){
     int len = message.length();
     int sum = stoi(message);
     if (len > CONDITION_MAX_LENGHT && sum % CONDITION_DIVIDER == 0) {
-        std::cout << "No error detected" << std::endl;
+        std::cout << "Error wasn't detected" << std::endl;
     } else {
         std::cout << "Error get data" << std::endl;
     }
