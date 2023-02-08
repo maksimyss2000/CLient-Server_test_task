@@ -12,10 +12,11 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-
-#define DEFAULT_PORT  4001
-#define DEFAULT_IP    "127.0.0.10"
-#define BUF_SIZE      150                  /* We assume that longer messages will be filtered out by program #1 */
+#define CONDITION_MAX_LENGHT 2             /* Set by Condition. To solve the phenomenon of magic numbers */
+#define CONDITION_DIVIDER    32 
+#define DEFAULT_PORT         4001
+#define DEFAULT_IP           "127.0.0.10"
+#define BUF_SIZE             150           /* We assume that longer messages will be filtered out by program #1 */
 
 
 class Server {
