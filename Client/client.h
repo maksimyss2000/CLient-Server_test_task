@@ -12,8 +12,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#define DEFAULT_PORT    4001
-#define DEFAULT_IP      "127.0.0.10"
+
+#define DEFAULT_PORT   4001
+#define DEFAULT_IP     "127.0.0.10"
 
 
 class Client {

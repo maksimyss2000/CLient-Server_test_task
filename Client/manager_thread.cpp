@@ -11,7 +11,7 @@ ManagerThread::ManagerThread(int argc, char *argv[]){
 
 int ManagerThread::testInputString(){
     std::size_t found = input.find_first_not_of("0123456789");
-    if (input.length() > 64 || found != std::string::npos) {
+    if (input.length() > MAX_INPUT_LENGHT || found != std::string::npos) {
         /* dbg */
         //std::cout << "DBG: not push str:" << input << std::endl;
         return 1;

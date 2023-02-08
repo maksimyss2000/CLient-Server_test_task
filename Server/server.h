@@ -31,9 +31,9 @@ private:
     int                sock;
     int                port;
     char               buf[BUF_SIZE];
+    struct sockaddr_in server_address;
     std::string        ip;
     std::string        message;
-    struct sockaddr_in server_address;
 };
 
 #endif // SERVER_H
