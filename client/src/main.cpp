@@ -1,7 +1,7 @@
 #include "manager_threads.h"
 
 int main() {
-    ManagerThread manager;
+    ManagerThread manager{};
     manager.startThreads();
     return 0;
 }

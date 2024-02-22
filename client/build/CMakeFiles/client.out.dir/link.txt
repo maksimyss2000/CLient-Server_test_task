@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/client.out.dir/src/client.cpp.o CMakeFiles/client.out.dir/src/handle_str.cpp.o CMakeFiles/client.out.dir/src/main.cpp.o CMakeFiles/client.out.dir/src/manager_threads.cpp.o CMakeFiles/client.out.dir/src/semafore.cpp.o -o client.out 

@@ -1,0 +1,3 @@
+/home/maksim/CLient-Server_test_task/client/build/CMakeFiles/client.out.dir
+/home/maksim/CLient-Server_test_task/client/build/CMakeFiles/edit_cache.dir
+/home/maksim/CLient-Server_test_task/client/build/CMakeFiles/rebuild_cache.dir

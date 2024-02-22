@@ -7,4 +7,4 @@ set(SOURCES ${SRC_DIR}/main.cpp  ${SRC_DIR}/server.cpp)
 
 add_executable(server.out ${SOURCES})
 
-target_link_libraries(server.out mhash)
+target_link_libraries(server.out)

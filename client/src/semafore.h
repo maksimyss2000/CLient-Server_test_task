@@ -3,7 +3,8 @@
 #include <mutex>
 #include <condition_variable>
 
-/* Semaphore is implemented as weak (waiting processes is a set) */
+/// @brief classical semaphore implementation 
+/// @details Semaphore is implemented as weak (waiting processes is a set) */
 class Semafore {
 private:
     int count;
@@ -11,7 +12,13 @@ private:
     std::condition_variable cond_var;
     
 public:
-    Semafore(int count = 0);
+    ///@brief
+    ///@param int starting init for semafore (max threads for critical section). Default value is one.
+    Semafore( int count = 0 ); 
+
+    ///@brief classical semafore  atomic operation(up).
     void release();
+    
+    ///@brief classical semafore atomic acquire(down)
     void acquire();
 };

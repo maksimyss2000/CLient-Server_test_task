@@ -5,33 +5,32 @@ ManagerThread::ManagerThread() {
     work_status = working;
 }
 
-void ManagerThread::setStrInBuffer(std::string& str) {
-    std::lock_guard<std::mutex> lock(buffer_mutex);
+void ManagerThread::setStrInBuffer( std::string& str ) {
+    std::lock_guard<std::mutex> lock( buffer_mutex );
 
     buffer.push(str);
 }
 
 std::string ManagerThread::getStrByBuffer() {
-    std::lock_guard<std::mutex> lock(buffer_mutex);
+    std::lock_guard<std::mutex> lock( buffer_mutex );
 
     std::string str = buffer.front();
     buffer.pop();
     return str;
 }
 
-void ManagerThread::getStrByConsole() {
+void ManagerThread::getMessageProcess() {
     std::string input_str;
-    while (work_status == working) {                         /* start main producer logic */
-        std::getline(std::cin, input_str);
+    while ( work_status == working ) {                        
 
-        if (!testInputStr(input_str)) {
+        if ( !testInputStr( input_str ) ) {
             continue;
         }
 
-        std::sort(input_str.begin(), input_str.end());
-        replaceAllEven(input_str);
+        std::sort( input_str.begin(), input_str.end(), std::greater<char>() );
+        replaceAllEven( input_str );
 
-        setStrInBuffer(input_str);
+        setStrInBuffer( input_str );
         semafore.release();
     }
 }
@@ -39,7 +38,7 @@ void ManagerThread::getStrByConsole() {
 void ManagerThread::sendStrByClient() {
     int sum;
     std::string str;
-    while (work_status == working) {                         /* start main consumer logic */
+    while ( work_status == working ) {                         
         semafore.acquire();
         str = getStrByBuffer();
 
@@ -50,10 +49,9 @@ void ManagerThread::sendStrByClient() {
     }
 }
 
-/* typical produser-consumer solution */
 void ManagerThread::startThreads() {
-    std::thread first_th(&ManagerThread::getStrByConsole, this);
-    std::thread second_th(&ManagerThread::sendStrByClient, this);
+    std::thread first_th( &ManagerThread::getMessageProcess, this );
+    std::thread second_th( &ManagerThread::sendStrByClient, this );
     first_th.join();
     second_th.join();
 }
