@@ -6,6 +6,6 @@
 
 #TODO добавить тесты 
 
-#TODO расписать docgen функций
+#TODO дописать docgen функций
 
 #TODO загнать perror под debug макрос 
