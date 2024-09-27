@@ -1,4 +1,8 @@
 # CLient-Server test task by Maxim Efimov
-Performing a test job of the CLient/Server application.  
-Demonstration of use.
+Пример работы клиент серверного приложения
 ![](gif/example_use.gif)
+
+Отчет за стажировку и результы в doc директории
+
+#TODO добавить тесты 
+#TODO расписать docgen функций
